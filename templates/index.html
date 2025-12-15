@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Paper Evaluator | Exam Mode</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>AI Paper Evaluator</h1>
+            <p>Create and grade full exams instantly.</p>
+        </header>
+
+        <main>
+            <div id="questions-container">
+                <!-- Dynamic questions will be injected here -->
+            </div>
+
+            <div class="controls">
+                <button class="action-btn secondary" onclick="addQuestion()">
+                    + Add Question
+                </button>
+            </div>
+
+            <div class="actions">
+                <button id="evaluate-btn" onclick="evaluateExam()">
+                    <span>Evaluate Full Exam</span>
+                </button>
+            </div>
+
+            <div id="result-section" class="hidden">
+                <div class="result-header">
+                    <h2>Exam Results</h2>
+                    <div class="total-score-card">
+                        <span class="label">Total Score</span>
+                        <span class="value" id="grand-total-display">0 / 0</span>
+                    </div>
+                </div>
+
+                <div id="detailed-results">
+                    <!-- Results table will go here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- TEMPLATE FOR A QUESTION BLOCK -->
+    <template id="question-template">
+        <div class="question-block" data-id="">
+            <div class="question-header">
+                <h3>Question <span class="q-number">1</span></h3>
+                <div class="mark-input-group compact">
+                    <label>Marks:</label>
+                    <input type="number" class="q-max-marks" value="10" min="1">
+                </div>
+                <button class="remove-btn" onclick="removeQuestion(this)">×</button>
+            </div>
+
+            <div class="input-group">
+                <!-- MODEL ANSWER -->
+                <div class="input-card model-card">
+                    <div class="card-header">
+                        <label>Reference Answer</label>
+                        <div class="tabs">
+                            <button class="tab-btn active" onclick="switchTab(this, 'text')">Text</button>
+                            <button class="tab-btn" onclick="switchTab(this, 'image')">Image</button>
+                        </div>
+                    </div>
+
+                    <div class="tab-content active text-content">
+                        <textarea class="q-model-text" placeholder="Reference answer..."></textarea>
+                    </div>
+                    <div class="tab-content image-content">
+                        <div class="file-upload-box">
+                            <input type="file" class="q-model-image" accept="image/*" onchange="previewImage(this)">
+                            <p>Upload Image</p>
+                        </div>
+                        <img class="image-preview hidden">
+                    </div>
+                </div>
+
+                <!-- STUDENT ANSWER -->
+                <div class="input-card student-card">
+                    <div class="card-header">
+                        <label>Student Answer</label>
+                        <div class="tabs">
+                            <button class="tab-btn active" onclick="switchTab(this, 'text')">Text</button>
+                            <button class="tab-btn" onclick="switchTab(this, 'image')">Image</button>
+                        </div>
+                    </div>
+
+                    <div class="tab-content active text-content">
+                        <textarea class="q-student-text" placeholder="Student answer..."></textarea>
+                    </div>
+                    <div class="tab-content image-content">
+                        <div class="file-upload-box">
+                            <input type="file" class="q-student-image" accept="image/*" onchange="previewImage(this)">
+                            <p>Upload Image</p>
+                        </div>
+                        <img class="image-preview hidden">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+
+</html>
