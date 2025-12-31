@@ -7,18 +7,43 @@
     <title>AI Paper Evaluator | Exam Mode</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@300;400;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
 <body>
     <div class="container">
         <header>
-            <h1>AI Paper Evaluator</h1>
-            <p>Create and grade full exams instantly.</p>
+            <div class="header-left">
+                <h1>Paper Evaluation Portal</h1>
+                <p>Computer Based Grading System</p>
+            </div>
+            <div class="header-right">
+                <!-- Placeholders for exam metadata could go here -->
+            </div>
         </header>
 
         <main>
+            <div class="question-block">
+                <div class="question-header">
+                    <h3>Exam Details</h3>
+                </div>
+                <div class="input-card">
+                    <div class="card-header">
+                        <label>Question Paper (Optional)</label>
+                    </div>
+                    <div class="file-upload-box">
+                        <input type="file" id="question-paper-upload" accept=".pdf,.doc,.docx,image/*"
+                            onchange="previewQuestionPaper(this)">
+                        <p>Click to upload Question Paper (PDF, Doc, Image)</p>
+                    </div>
+                    <div id="qp-filename" class="hidden"
+                        style="margin-top: 10px; color: var(--primary-color); font-weight: 600;"></div>
+                </div>
+            </div>
+
             <div id="questions-container">
                 <!-- Dynamic questions will be injected here -->
             </div>
@@ -56,18 +81,21 @@
         <div class="question-block" data-id="">
             <div class="question-header">
                 <h3>Question <span class="q-number">1</span></h3>
-                <div class="mark-input-group compact">
-                    <label>Marks:</label>
-                    <input type="number" class="q-max-marks" value="10" min="1">
+
+                <div class="question-meta">
+                    <div class="mark-input-group compact">
+                        <label>Max Marks:</label>
+                        <input type="number" class="q-max-marks" value="10" min="1">
+                    </div>
+                    <button class="remove-btn" onclick="removeQuestion(this)" title="Remove Question">×</button>
                 </div>
-                <button class="remove-btn" onclick="removeQuestion(this)">×</button>
             </div>
 
             <div class="input-group">
-                <!-- MODEL ANSWER -->
+                <!-- MODEL ANSWER (TEACHER) -->
                 <div class="input-card model-card">
                     <div class="card-header">
-                        <label>Reference Answer</label>
+                        <label>Model / Reference Answer</label>
                         <div class="tabs">
                             <button class="tab-btn active" onclick="switchTab(this, 'text')">Text</button>
                             <button class="tab-btn" onclick="switchTab(this, 'image')">Image</button>
@@ -75,21 +103,21 @@
                     </div>
 
                     <div class="tab-content active text-content">
-                        <textarea class="q-model-text" placeholder="Reference answer..."></textarea>
+                        <textarea class="q-model-text" placeholder="Enter the correct answer key here..."></textarea>
                     </div>
                     <div class="tab-content image-content">
                         <div class="file-upload-box">
                             <input type="file" class="q-model-image" accept="image/*" onchange="previewImage(this)">
-                            <p>Upload Image</p>
+                            <p>Upload Answer Key Image</p>
                         </div>
                         <img class="image-preview hidden">
                     </div>
                 </div>
 
-                <!-- STUDENT ANSWER -->
+                <!-- STUDENT ANSWER (STUDENT) -->
                 <div class="input-card student-card">
                     <div class="card-header">
-                        <label>Student Answer</label>
+                        <label>Student Submission</label>
                         <div class="tabs">
                             <button class="tab-btn active" onclick="switchTab(this, 'text')">Text</button>
                             <button class="tab-btn" onclick="switchTab(this, 'image')">Image</button>
@@ -97,12 +125,12 @@
                     </div>
 
                     <div class="tab-content active text-content">
-                        <textarea class="q-student-text" placeholder="Student answer..."></textarea>
+                        <textarea class="q-student-text" placeholder="Paste student's answer here..."></textarea>
                     </div>
                     <div class="tab-content image-content">
                         <div class="file-upload-box">
                             <input type="file" class="q-student-image" accept="image/*" onchange="previewImage(this)">
-                            <p>Upload Image</p>
+                            <p>Upload Student Paper Image</p>
                         </div>
                         <img class="image-preview hidden">
                     </div>

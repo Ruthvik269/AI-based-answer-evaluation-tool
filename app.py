@@ -6,7 +6,12 @@ import pytesseract
 from PIL import Image
 import io
 
+import os
+from werkzeug.utils import secure_filename
+
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = 'uploads'
+os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
 # OPTIONAL: Set tesseract path directly if not in PATH
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
@@ -61,6 +66,14 @@ def index():
 
 @app.route('/evaluate_exam', methods=['POST'])
 def evaluate_exam():
+    # 0. Handle Question Paper Upload (Optional)
+    if 'question_paper' in request.files:
+        f = request.files['question_paper']
+        if f.filename != '':
+            filename = secure_filename(f.filename)
+            f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            # Logic to process the question paper can go here in future
+
     results = []
     grand_total_obtained = 0
     grand_total_max = 0

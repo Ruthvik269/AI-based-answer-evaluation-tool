@@ -78,10 +78,28 @@ function previewImage(input) {
     }
 }
 
+function previewQuestionPaper(input) {
+    const fileNameDiv = document.getElementById('qp-filename');
+    const file = input.files[0];
+    if (file) {
+        fileNameDiv.textContent = `Selected: ${file.name}`;
+        fileNameDiv.classList.remove('hidden');
+    } else {
+        fileNameDiv.textContent = '';
+        fileNameDiv.classList.add('hidden');
+    }
+}
+
 async function evaluateExam() {
     const formData = new FormData();
     const questions = document.querySelectorAll('.question-block');
     let hasError = false;
+
+    // 0. Question Paper
+    const qpFile = document.getElementById('question-paper-upload').files[0];
+    if (qpFile) {
+        formData.append('question_paper', qpFile);
+    }
 
     questions.forEach((q, index) => {
         const i = index; // 0-based index for backend
